@@ -38,7 +38,7 @@ public class ClientApplication implements CommandLineRunner {
 			Files.createFile(Paths.get(pathToFileToWrite));
 		}
 		long timeBefore = System.currentTimeMillis();
-		paymentService.generatePayment(args[0], Long.valueOf(args[1])).forEach(p -> {
+		paymentService.generatePayment(args[0], Long.valueOf(args[1])).parallel().forEach(p -> {
 			try {
 				ResponseEntity<PaymentResponse> response = template.postForEntity(args[2], p, PaymentResponse.class);
 				if (response.getStatusCode().is2xxSuccessful()) {
