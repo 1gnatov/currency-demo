@@ -32,8 +32,12 @@ public class ClientApplication implements CommandLineRunner {
 			log.warn("Invalid number of args: {}", args.length);
 			return;
 		}
+		String pathToFileToWrite = args[3];
 		log.info("Do some client stuff");
 		RestTemplate template = new RestTemplate();
+		if (Files.notExists(Paths.get(pathToFileToWrite))) {
+			Files.createFile(Paths.get(pathToFileToWrite));
+		}
 		paymentService.generatePayment(args[0], Long.valueOf(args[1])).forEach(p -> {
 			try {
 				ResponseEntity<PaymentResponse> response = template.postForEntity(args[2], p, PaymentResponse.class);
@@ -52,6 +56,7 @@ public class ClientApplication implements CommandLineRunner {
 				log.error(e.getLocalizedMessage(), e);
 			}
 		});
+		//log.info("{}", template.getForEntity("http://localhost:8888/stat", String.class).getBody());
 		log.info("Done");
 
 	}

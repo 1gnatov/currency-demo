@@ -21,8 +21,11 @@ public class StatisticComponentImpl implements StatisticComponent {
 		synchronized (this) {    // обязаны синхронизироваться иначе при получении статистики в другом методе можем потерять данные на добавление
 			StatisticObject officeStatistic = officeStatisticMap.getOrDefault(officeName, new StatisticObject(amount, comission));
 			officeStatistic.addStatistic(amount, comission);
-			StatisticObject dateStatistic = dateStatisticMap.getOrDefault(dateTime.toLocalDate(), new StatisticObject(amount, comission));
+			officeStatisticMap.put(officeName, officeStatistic);
+			LocalDate localDate = dateTime.toLocalDate();
+			StatisticObject dateStatistic = dateStatisticMap.getOrDefault(localDate, new StatisticObject(amount, comission));
 			dateStatistic.addStatistic(amount, comission);
+			dateStatisticMap.put(localDate, dateStatistic);
 		}
 	}
 
