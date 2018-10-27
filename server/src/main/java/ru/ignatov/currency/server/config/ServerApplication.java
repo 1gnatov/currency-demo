@@ -3,11 +3,13 @@ package ru.ignatov.currency.server.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import ru.ignatov.currency.server.component.StatisticComponent;
+import ru.ignatov.currency.server.controller.CurrencyServerController;
 
 import java.util.HashMap;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(scanBasePackageClasses = {CurrencyServerController.class, StatisticComponent.class})
 public class ServerApplication {
 
 	public static void main(String[] args) {
