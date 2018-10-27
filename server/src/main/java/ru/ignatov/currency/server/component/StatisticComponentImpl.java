@@ -17,7 +17,7 @@ public class StatisticComponentImpl implements StatisticComponent {
 	private HashMap<LocalDate, StatisticObject> dateStatisticMap = new HashMap<>(); // не имеет смысла использовать ConcurrentHashMap
 
 	/*
-	* если текущей скорости процессинга недостаточно (~ 3200 rps), то именно этот класс нужно будет зарефакторить
+	* если текущей скорости процессинга недостаточно (~ 3800-4000 rps), то именно этот класс нужно будет зарефакторить
 	* */
 
 	@Override
