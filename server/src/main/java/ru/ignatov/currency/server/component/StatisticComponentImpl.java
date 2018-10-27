@@ -16,6 +16,10 @@ public class StatisticComponentImpl implements StatisticComponent {
 	private ConcurrentHashMap<String, StatisticObject> officeStatisticMap = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<LocalDate, StatisticObject> dateStatisticMap = new ConcurrentHashMap<>();
 
+	/*
+	* если текущей скорости процессинга недостаточно (200-400 rps), то именно этот класс нужно будет зарефакторить
+	* */
+
 	@Override
 	public void addStatistic(double amount, LocalDateTime dateTime, String officeName, double comission) {
 		synchronized (this) {    // обязаны синхронизироваться иначе при получении статистики в другом методе можем потерять данные на добавление

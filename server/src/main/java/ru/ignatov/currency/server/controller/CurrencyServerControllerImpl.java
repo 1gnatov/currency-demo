@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.ignatov.currency.server.component.StatisticComponent;
 import ru.ignatov.currency.server.model.StatResponse;
-import ru.ignatov.currency.server.utils.PaymentUtils;
+import ru.ignatov.currency.server.utils.ServerPaymentUtils;
 import ru.ignatov.currency.server.model.PaymentRequest;
 import ru.ignatov.currency.server.model.PaymentResponse;
 
@@ -23,12 +23,13 @@ public class CurrencyServerControllerImpl implements CurrencyServerController {
 
 	@PostMapping(path = "/pay")
 	public @ResponseBody PaymentResponse acceptPayment(@RequestBody PaymentRequest paymentRequest) {
-		log.info("payment request {}", paymentRequest);
+		log.debug("payment request {}", paymentRequest);
 		PaymentResponse paymentResponse = new PaymentResponse();
 		paymentResponse.setId(UUID.randomUUID().toString());
-		double comission = paymentRequest.getAmount() * 0.15d;
-		paymentResponse.setComission(PaymentUtils.roundTwoNumberAfterPoint(comission));
+		double comission = ServerPaymentUtils.roundTwoNumberAfterPoint(paymentRequest.getAmount() * 0.0015d);
+		paymentResponse.setComission(comission);
 		statisticComponent.addStatistic(paymentRequest.getAmount(), paymentRequest.getDateTime(), paymentRequest.getOfficeName(), comission);
+		log.debug("payment response {}", paymentResponse);
 		return paymentResponse;
 	}
 

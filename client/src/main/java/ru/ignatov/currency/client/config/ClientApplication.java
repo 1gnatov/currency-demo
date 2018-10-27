@@ -33,11 +33,11 @@ public class ClientApplication implements CommandLineRunner {
 			return;
 		}
 		String pathToFileToWrite = args[3];
-		log.info("Do some client stuff");
 		RestTemplate template = new RestTemplate();
 		if (Files.notExists(Paths.get(pathToFileToWrite))) {
 			Files.createFile(Paths.get(pathToFileToWrite));
 		}
+		long timeBefore = System.currentTimeMillis();
 		paymentService.generatePayment(args[0], Long.valueOf(args[1])).forEach(p -> {
 			try {
 				ResponseEntity<PaymentResponse> response = template.postForEntity(args[2], p, PaymentResponse.class);
@@ -56,7 +56,9 @@ public class ClientApplication implements CommandLineRunner {
 				log.error(e.getLocalizedMessage(), e);
 			}
 		});
+		long timeAfter = System.currentTimeMillis();
 		//log.info("{}", template.getForEntity("http://localhost:8888/stat", String.class).getBody());
+		log.info("Total time in ms: {}", timeAfter - timeBefore);
 		log.info("Done");
 
 	}

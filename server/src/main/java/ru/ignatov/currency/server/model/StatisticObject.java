@@ -26,10 +26,10 @@ public class StatisticObject {
 	}
 
 	public double getTotalAmount() {
-		return totalAmount.doubleValue();
+		return totalAmount.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 
 	public double getTotalComission() {
-		return totalComission.doubleValue();
+		return totalComission.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 }
