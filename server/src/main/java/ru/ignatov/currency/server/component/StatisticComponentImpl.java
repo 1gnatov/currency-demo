@@ -8,16 +8,16 @@ import ru.ignatov.currency.server.model.StatisticObject;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 @Component
 public class StatisticComponentImpl implements StatisticComponent {
 
-	private ConcurrentHashMap<String, StatisticObject> officeStatisticMap = new ConcurrentHashMap<>();
-	private ConcurrentHashMap<LocalDate, StatisticObject> dateStatisticMap = new ConcurrentHashMap<>();
+	private HashMap<String, StatisticObject> officeStatisticMap = new HashMap<>();
+	private HashMap<LocalDate, StatisticObject> dateStatisticMap = new HashMap<>(); // не имеет смысла использовать ConcurrentHashMap
 
 	/*
-	* если текущей скорости процессинга недостаточно (200-400 rps), то именно этот класс нужно будет зарефакторить
+	* если текущей скорости процессинга недостаточно (~ 3200 rps), то именно этот класс нужно будет зарефакторить
 	* */
 
 	@Override
@@ -39,10 +39,10 @@ public class StatisticComponentImpl implements StatisticComponent {
 			StatResponse result = new StatResponse();
 			officeStatisticMap.forEach((office, officeStatistic) -> result.getOfficeStatResponseList().add(
 					new OfficeStatResponse(office, officeStatistic.getNumberOfPayments(), officeStatistic.getTotalAmount(), officeStatistic.getTotalComission())));
-			officeStatisticMap = new ConcurrentHashMap<>();
+			officeStatisticMap = new HashMap<>();
 			dateStatisticMap.forEach((date, dateStatistic) -> result.getDateStatResponseList().add(
 					new DateStatResponse(date, dateStatistic.getNumberOfPayments(), dateStatistic.getTotalAmount(), dateStatistic.getTotalComission())));
-			dateStatisticMap = new ConcurrentHashMap<>();
+			dateStatisticMap = new HashMap<>();
 			return result;
 		}
 	}
